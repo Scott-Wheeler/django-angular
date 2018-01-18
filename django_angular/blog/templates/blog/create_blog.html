@@ -1,0 +1,15 @@
+<h1>Create a new Blog</h1>
+<ul>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action={% url "blog:save_blog" blog.id %} method="post">
+{% csrf_token %}
+
+<input type="text" name="name" id="name" value="{{ blog.name }}" />
+<label for="name">Name</label><br />
+<input type="text" name="tagline" id="tagline" value="{{ blog.tagline }}" />
+<label for="tagline">Tagline</label><br />
+</ul>
+
+<input type="submit" "Save" />
+</form>

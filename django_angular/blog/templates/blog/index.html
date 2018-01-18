@@ -1,0 +1,13 @@
+{% if blogs %}
+    <ul>
+	{% for blog_entry in latest_blog_entries %}
+		<li><a href="{% url 'blog:detail' blog_entry.id %}">{{ blog_entry.text }}</a></li>
+	{% endfor %}
+    </ul>
+{% else %}
+	<p>No blogs are available.</p>
+{% endif %}
+
+<ul>
+<li><a href="{% url 'blog:create_blog' %}">Create a new Blog</a></li>
+</ul>
