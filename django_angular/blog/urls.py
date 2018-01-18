@@ -15,4 +15,6 @@ urlpatterns = [
 
     # /blog/5/
     path("<int:pk>/", views.DetailView.as_view(), name="detail"),
+    path("create/<int:pk>/", views.create_blog, name="create_blog"),
+    path("save/<int:pk>/", views.save_blog, name="save_blog"),
 ]
