@@ -15,8 +15,8 @@ urlpatterns = [
 
     # /blog/5/
     path("<int:pk>/", views.BlogDetailView.as_view(), name="blog"),
-    path("entry/<int:pk>/", views.BlogDetailView.as_view(), name="blogentry"),
-    path("author/<int:pk>/", views.BlogDetailView.as_view(), name="author"),
+    path("entry/<int:pk>/", views.BlogEntryDetailView.as_view(), name="blogentry"),
+    path("author/<int:pk>/", views.AuthorDetailView.as_view(), name="author"),
 
 
 #     # /blog/5/write/

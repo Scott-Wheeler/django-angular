@@ -156,7 +156,8 @@ class BlogEntryDetailView(generic.DetailView):
     model = BlogEntry
     template_name = "blog/blogentry.html"
 
-
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
 
 # save actions
