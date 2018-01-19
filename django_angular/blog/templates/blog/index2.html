@@ -1,0 +1,22 @@
+{% if blogs %}
+    <ul>
+	{% for blog_entry in latest_blog_entries %}
+		<li><a href="{% url 'blog:detail' blog_entry.id %}">{{ blog_entry.text }}</a></li>
+	{% endfor %}
+    </ul>
+{% else %}
+	<p>No blogs are available.</p>
+{% endif %}
+
+
+<form action={% url "blog:mkblog" %} method="post">
+{% csrf_token %}
+<input type="submit" name="newblog" id="btn_newblog" value="New Blog" />
+<!-- <label for="btn_newblog">Create a new Blog</label><br /> -->
+</form>
+
+<!--
+<ul>
+<li><a href="{% url 'blog:mkblog' %}">Create a new Blog</a></li>
+</ul>
+-->
