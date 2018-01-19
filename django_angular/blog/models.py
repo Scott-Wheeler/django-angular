@@ -2,20 +2,35 @@ from django.db import models
 from django.utils import timezone
 
 import datetime
+from django.urls.base import reverse
 
 # Create your models here.
 
-class Blog(models.Model):
-    name = models.CharField(max_length=100)
-    tagline = models.CharField(max_length=256)
+class Author(models.Model):
+    name = models.CharField(max_length=200)
 
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('blog:author', kwargs={'pk': self.pk})
+
+
+class Blog(models.Model):
+    name = models.CharField(max_length=200)
+    tagline = models.CharField(max_length=500)
+
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse('blog:blog', kwargs={'pk': self.pk})
+
+
 class BlogEntry(models.Model):
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
-    title = models.CharField("Blog Entry Title", max_length=200)
-    text = models.TextField("blog entry text")
+    title = models.CharField(max_length=200)
+    text = models.TextField()
     pub_date = models.DateTimeField("date published")
 
 #     author = models.ForeignKey(User)
@@ -26,3 +41,8 @@ class BlogEntry(models.Model):
     
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('blog:blogentry', kwargs={'pk': self.pk})
+
+
