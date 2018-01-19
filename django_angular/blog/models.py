@@ -26,6 +26,9 @@ class Blog(models.Model):
     def get_absolute_url(self):
         return reverse('blog:blog', kwargs={'pk': self.pk})
 
+    def get_blog_entries(self):
+        return BlogEntry.objects.filter(blog_id=self.pk)
+
 
 class BlogEntry(models.Model):
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
