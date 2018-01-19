@@ -1,2 +1,12 @@
-<p>{{ object.name }}</p>
-<p>{{ object.tagline }}</p>
+<p>{{ blog.name }}</p>
+<p>{{ blog.tagline }}</p>
+<br />
+{% if entries %}
+    <ul>
+	{% for entry in entries %}
+		<li><a href="{% url 'blog:blogentry' entry.id %}">{{ entry.title }}</a></li>
+	{% endfor %}
+    </ul>
+{% else %}
+	<p>No blogs entries in this blog.</p>
+{% endif %}

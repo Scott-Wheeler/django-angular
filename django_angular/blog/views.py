@@ -9,6 +9,7 @@ from django.utils import timezone
 
 from .models import Blog, BlogEntry, Author
 from .forms import BlogForm, BlogEntryForm, ContactForm
+from django.http.request import HttpRequest
 
 
 ## what views do I need?
@@ -109,10 +110,14 @@ class ContactView(FormView):
 ## index view as generic view (class based)
 class IndexView(generic.ListView):
     template_name = "blog/index.html"
-    context_object_name = "latest_blog_entries"
+    context_object_name = "blogs"
     
     def get_queryset(self):
-        return BlogEntry.objects.order_by("-pub_date")[:5]
+        return Blog.objects.order_by("-id")
+#         ## TODO:
+#         ## now this is working on Blog not BlogEntry, which has no pub_date,
+#         ## it needs to order by the latest pub_date of its entries 
+#         return Blog.objects.order_by("-pub_date")[:5]
 
 
 class AuthorDetailView(generic.DetailView):
@@ -124,7 +129,28 @@ class AuthorDetailView(generic.DetailView):
 class BlogDetailView(generic.DetailView):
     model = Blog
     template_name = "blog/blog.html"
+    
+    ## pk is passed in as a kwarg
+    def get(self, request, *args, **kwargs):
+        blog = get_object_or_404(Blog, pk=kwargs['pk'])
+#         entries = BlogEntry.objects.filter(blog_id=blog.pk)
+        entries = blog.get_blog_entries()
+        return render(request, "blog/blog.html", {'blog': blog, 'entries':entries})
 
+#     ## pk == 8 is passed in as a kwarg
+#     def get(self, request, *args, **kwargs):
+# #         print("should say 8: ", kwargs['pk'])
+#         blog = get_object_or_404(Blog, pk=kwargs['pk'])
+# #         print("blog: " + repr(blog))
+#         entries = BlogEntry.objects.filter(blog_id=blog.pk)
+# #         entries = blog.get_blog_entries()
+# #         print("blog entries: " + repr(entries))
+# #         entries = Blog.blogentry_set.order_by("-pub_date")
+#         return render(request, "blog/blog.html", {'blog': blog, 'entries':entries})
+# #         return render(request, "blog:blog", {'blog': blog, 'entries':entries})
+
+#         print("<~> ", request)
+#         print("<~> ", kwargs)
 
 class BlogEntryDetailView(generic.DetailView):
     model = BlogEntry
