@@ -27,7 +27,8 @@ class Blog(models.Model):
         return reverse('blog:blog', kwargs={'pk': self.pk})
 
     def get_blog_entries(self):
-        return BlogEntry.objects.filter(blog_id=self.pk)
+        return self.blogentry_set.all()
+#         return BlogEntry.objects.filter(blog_id=self.pk)
 
 
 class BlogEntry(models.Model):
