@@ -12,7 +12,8 @@ from django.http.response import HttpResponseRedirect
 from django.urls.base import reverse
 from django.views import generic
 
-
+from django.utils import timezone
+from django.db.models import Count
 
 ## A ListView abstracts the concept of "display a list of objects"
 ## A DetailView abscracts the concept of "show the details of a particular type of object"
@@ -25,7 +26,16 @@ class IndexView(generic.ListView):
     context_object_name = "latest_question_list"
     
     def get_queryset(self):
-        return Question.objects.order_by("-pub_date")[:5]
+        """
+        questions that are in the past and have at least 1 choice
+        """
+        return Question.objects.filter(
+            pub_date__lte = timezone.now()
+        ).annotate(
+            Count("choice")
+        ).filter(
+            choice__count__gt = 0
+        ).order_by("-pub_date")[:5]
 
 
 ## detail view as generic view (class based)
@@ -33,12 +43,34 @@ class DetailView(generic.DetailView):
     model = Question
     template_name = "poll/detail.html"
 
+    def get_queryset(self):
+        """
+        questions that are in the past and have at least 1 choice
+        """
+        return Question.objects.filter(
+            pub_date__lte = timezone.now()
+        ).annotate(
+            Count("choice")
+        ).filter(
+            choice__count__gt = 0
+        )
 
 ## results view as a generic view (class based)
 class ResultsView(generic.DetailView):
     model = Question
     template_name = "poll/results.html"
 
+    def get_queryset(self):
+        """
+        questions that are in the past and have at least 1 choice
+        """
+        return Question.objects.filter(
+            pub_date__lte = timezone.now()
+        ).annotate(
+            Count("choice")
+        ).filter(
+            choice__count__gt = 0
+        )
 
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
