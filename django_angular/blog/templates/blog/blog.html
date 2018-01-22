@@ -10,3 +10,7 @@
 {% else %}
 	<p>No blogs entries in this blog.</p>
 {% endif %}
+
+<ul>
+<li><a href="{% url 'blog:blogentry_creation' %}">Create a new Entry in this Blog</a></li>
+</ul>
