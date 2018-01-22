@@ -30,6 +30,10 @@ class Blog(models.Model):
         return self.blogentry_set.all()
 #         return BlogEntry.objects.filter(blog_id=self.pk)
 
+    def get_published_entries(self):
+        return self.blogentry_set.filter(
+            pub_date__lte = timezone.now()
+        )
 
 class BlogEntry(models.Model):
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
