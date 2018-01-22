@@ -3,7 +3,9 @@ from django import views
 from django.views import View, generic
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.http.response import HttpResponse, HttpResponseRedirect
+
 from django.utils import timezone
+from django.db.models import Count
 
 # Create your views here.
 
@@ -111,9 +113,27 @@ class ContactView(FormView):
 class IndexView(generic.ListView):
     template_name = "blog/index.html"
     context_object_name = "blogs"
-    
+
     def get_queryset(self):
-        return Blog.objects.order_by("-id")
+        """
+        Get all Blogs that have published (in the past) BlogEntry(ies)
+        Don't get blogs that have no entries or only have future entries
+        order the blogs by the most recently published entry
+        """
+        return Blog.objects.filter(
+            blogentry__pub_date__lte = timezone.now()  ## filter for blogs with entries in past
+        ).annotate(
+            Count("blogentry")
+        ).filter(
+            blogentry__gt = 0
+        )
+
+
+#         return Blog.objects.order_by("-id")
+#         return Blog
+    
+    
+    
 #         ## TODO:
 #         ## now this is working on Blog not BlogEntry, which has no pub_date,
 #         ## it needs to order by the latest pub_date of its entries 
