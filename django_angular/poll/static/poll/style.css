@@ -1,0 +1,21 @@
+li {
+	color: white;
+}
+
+li a {
+	color: green;
+}
+
+h1 {
+	color: white;
+}
+
+.white {
+	color: white;
+}
+
+body {
+	background: white url("images/background.gif");
+	/*background: white url("images/background.gif") no-repeat right bottom;*/
+	/*background: white url("images/background.gif") no-repeat;*/
+}

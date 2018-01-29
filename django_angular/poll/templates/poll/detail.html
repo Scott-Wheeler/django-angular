@@ -1,3 +1,7 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'poll/style.css' %}" />
+
 <h1>{{ question.question_text }}</h1>
 <ul>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
@@ -6,8 +10,8 @@
 {% csrf_token %}
 
 {% for choice in question.choice_set.all %}
-	<input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
-	<label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br /> 
+	<input class="white" type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+	<label class="white" for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br /> 
 {% endfor %}
 </ul>
 
